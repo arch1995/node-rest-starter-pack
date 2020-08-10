@@ -13,7 +13,7 @@ function logger(module) {
     new transports.Console({
       level: 'debug',
       format: combine(
-        label({ label: getFilePath(module) }),
+        label({ label: getLabel(module) }),
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         consoleFormat,
       ),
@@ -43,9 +43,17 @@ function logger(module) {
   return logger;
 }
 
-function getFilePath(module) {
-  // Add filename in log statements
-  return module.filename.split('/').slice(-2).join('/');
+// Add label in log statements
+// if module is passed as a string then return the string value
+// else return the extracted file name from the module object.
+function getLabel(module) {
+  let label = '';
+  if (typeof module === 'string') {
+    label = module;
+  } else if (typeof module === 'object') {
+    label = module.filename.split('/').slice(-2).join('/');
+  }
+  return label;
 }
 
 module.exports = logger;
