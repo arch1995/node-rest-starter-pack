@@ -1,5 +1,5 @@
 class ApplicationError extends Error {
-  constructor(statusCode, message) {
+  constructor(statusCode, message, stack) {
     super();
     if (statusCode) {
       this.statusCode = statusCode;
@@ -7,6 +7,10 @@ class ApplicationError extends Error {
 
     if (message) {
       this.message = message;
+    }
+
+    if (stack) {
+      this.stack = stack;
     }
   }
 }

@@ -1,7 +1,7 @@
 const httpStatus = require('http-status-codes');
-const ApplicationError = require('../utils/applicationErrors');
-const logger = require('../core/logger')(module);
-const config = require('../config/app.config');
+const ApplicationError = require('@utils/applicationErrors');
+const logger = require('@core/logger')('app.middleware.error');
+const config = require('@config/app.config');
 
 /**
  * @description catches route not found error.
@@ -17,12 +17,12 @@ const handleNotFoundRoutes = (_req, res) => {
 /**
  * @description Converts the error to an instance of ApplicationError.
  */
-const errorConverter = (err, req, res, next) => {
+const errorConverter = (err, _req, _res, next) => {
   let error = err;
   if (!(error instanceof ApplicationError)) {
     const statusCode = error.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
-    const message = error.message || httpStatus[statusCode];
-    error = new ApplicationError(statusCode, message, false, err.stack);
+    const message = error.message || httpStatus.getStatusText[statusCode];
+    error = new ApplicationError(statusCode, message, err.stack);
   }
   next(error);
 };
@@ -33,11 +33,15 @@ const errorConverter = (err, req, res, next) => {
 const errorHandler = (err, req, res, next) => {
   const formattedErrorMessage = `${req.originalUrl} - ${req.method} - ${err.statusCode} - ${err.message}\n${err.stack}`;
   logger.error(formattedErrorMessage);
-  return res.status(err.status || 500).json({
-    status: err.statusCode,
-    message:
-      config.env === 'development' ? err.message : 'Something went wrong!',
-  });
+
+  // send error message if not sent from the application layer.
+  if (!res.headersSent) {
+    return res.status(err.status || 500).json({
+      status: err.statusCode,
+      message:
+        config.env === 'development' ? err.message : 'Something went wrong!',
+    });
+  }
 };
 
 module.exports = {

@@ -4,18 +4,18 @@ const cors = require('cors');
 const compression = require('compression');
 const morgan = require('morgan');
 
-const logger = require('./core/logger')('app');
+const logger = require('@core/logger')('app');
 
 // used to monkey patch all express routes with try catch blocks
 // error thrown will be handled by the error handler middleware.
 require('express-async-errors');
 
-const AppRouter = require('./routes');
+const AppRouter = require('@routes');
 const {
   handleNotFoundRoutes,
   errorConverter,
   errorHandler,
-} = require('./middlewares/errors');
+} = require('@middlewares/errors');
 
 const app = express();
 
