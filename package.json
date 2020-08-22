@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "cross-env NODE_ENV=development nodemon",
-    "prod": "cross-env NODE_ENV=production npm start"
+    "prod": "cross-env NODE_ENV=production npm start",
+    "generate": "plop --plopfile internals/generators/index.js",
+    "prettify": "prettier --write"
   },
   "keywords": [
     "node",
@@ -39,7 +41,9 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "plop": "^2.7.4",
+    "prettier": "^1.19.1"
   },
   "_moduleAliases": {
     "@root": ".",
