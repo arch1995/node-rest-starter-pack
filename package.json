@@ -56,6 +56,10 @@
     "@models": "./app/models",
     "@routes": "./app/routes",
     "@services": "./app/services",
-    "@utils": "./app/utils"
+    "@utils": "./app/utils",
+    "@logger": "./app/core/logger",
+    "@errors": "./app/errors",
+    "@helpers": "./app/helpers",
+    "@validations": "./app/validations"
   }
 }

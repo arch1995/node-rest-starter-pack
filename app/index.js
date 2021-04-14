@@ -4,7 +4,7 @@ const cors = require('cors');
 const compression = require('compression');
 const morgan = require('morgan');
 
-const logger = require('@core/logger')('app');
+const logger = require('@logger')('app');
 
 // used to monkey patch all express routes with try catch blocks
 // error thrown will be handled by the error handler middleware.
@@ -21,6 +21,10 @@ const app = express();
 
 // TODO: security headers.
 // app.use(helmet);
+
+// Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// It shows the real origin IP in the heroku or Cloudwatch logs
+app.enable('trust proxy');
 
 // parse json request body
 app.use(bodyParser.json());

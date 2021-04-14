@@ -5,7 +5,7 @@ require('module-alias/register');
 
 const app = require('@app');
 const config = require('@config/app.config');
-const logger = require('@core/logger')('server');
+const logger = require('@logger')('server');
 const MongoConnection = require('@core/db');
 
 let server = null;
@@ -26,7 +26,7 @@ process.on('SIGTERM', () => {
   logger.info('Graceful shutdown received');
   if (server) {
     // close your db connections here.
-    mongoConnection.close((err) => {
+    mongo.close((err) => {
       if (err) {
         logger.error(`Error closing mongo connection ${err}`);
       }
